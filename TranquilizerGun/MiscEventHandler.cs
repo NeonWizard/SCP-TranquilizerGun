@@ -18,6 +18,8 @@ namespace TranquilizerGun
 		public void OnWaitingForPlayers(WaitingForPlayersEvent ev)
 		{
 			if (!this.plugin.GetConfigBool("tranqgun_enable")) this.plugin.pluginManager.DisablePlugin(plugin);
+
+			plugin.ReloadConfig();
 		}
 
 		public void OnSetConfig(SetConfigEvent ev)

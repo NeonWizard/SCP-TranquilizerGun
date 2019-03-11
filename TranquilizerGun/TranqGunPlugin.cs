@@ -26,9 +26,12 @@ namespace TranquilizerGun
 	{
 		public const int TranqID = 105;
 
+		public CustomWeaponHandler<TranquilizerGun> Handler { get; private set; }
+
 		public static int Damage { get; private set; }
 		public static float FireRate { get; private set; }
 		public static int Magazine { get; private set; }
+		public static int ReserveAmmo { get; private set; }
 
 		public static float TranqDuration { get; private set; }
 
@@ -52,23 +55,24 @@ namespace TranquilizerGun
 			this.AddConfig(new ConfigSetting("tranqgun_damage", 0, SettingType.NUMERIC, true, "Damage dealt by the tranquilizer gun."));
 			this.AddConfig(new ConfigSetting("tranqgun_firerate", 3f, SettingType.FLOAT, true, "Time (in seconds) between each shot."));
 			this.AddConfig(new ConfigSetting("tranqgun_magazine", 1, SettingType.NUMERIC, true, "Amount of shots per magazine."));
+			this.AddConfig(new ConfigSetting("tranqgun_reserveammo", 2, SettingType.NUMERIC, true, "Default reserve ammo for each player."));
 
 			this.AddConfig(new ConfigSetting("tranqgun_duration", 5f, SettingType.FLOAT, true, "Time (in seconds) the target is tranquilized for."));
-
-			this.ReloadConfig();
 
 			// -- Register events
 			this.AddEventHandlers(new MiscEventHandler(this));
 
 			// -- Register weapon
-			CustomWeaponHandler<TranquilizerGun> tGun = new CustomWeaponHandler<TranquilizerGun>(TranqGunPlugin.TranqID)
+			this.Handler = new CustomWeaponHandler<TranquilizerGun>(TranqGunPlugin.TranqID)
 			{
 				DefaultType = ItemType.USP,
 				AmmoName = "Tranquilizer Dart",
 				DefaultReserveAmmo = 2
 			};
-			tGun.Register();
+			this.Handler.Register();
 			Items.AddRecipe(new Id914Recipe(KnobSetting.FINE, (int)ItemType.USP, TranqGunPlugin.TranqID, 1));
+
+			this.ReloadConfig();
 		}
 
 		public void ReloadConfig()
@@ -78,6 +82,9 @@ namespace TranquilizerGun
 			TranqGunPlugin.Magazine = GetConfigInt("tranqgun_magazine");
 
 			TranqGunPlugin.TranqDuration = GetConfigFloat("tranqgun_duration");
+
+			TranqGunPlugin.ReserveAmmo = GetConfigInt("tranqgun_reserveammo");
+			this.Handler.DefaultReserveAmmo = TranqGunPlugin.ReserveAmmo;
 		}
 	}
 }
