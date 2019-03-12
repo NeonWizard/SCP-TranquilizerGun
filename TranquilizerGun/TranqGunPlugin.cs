@@ -15,9 +15,9 @@ namespace TranquilizerGun
 	[PluginDetails(
 		author = "Spooky",
 		name = "TranquilizerGun",
-		description = "shoood people make em drop",
+		description = "Adds a tranquilizer gun with temporarily ragdolls players.",
 		id = "xyz.wizardlywonders.TranquilizerGun",
-		version = "1.0.0",
+		version = "1.0.1",
 		SmodMajor = 3,
 		SmodMinor = 3,
 		SmodRevision = 0

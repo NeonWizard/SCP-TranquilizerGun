@@ -17,6 +17,15 @@ namespace TranquilizerGun
 
 		public int damage => TranqGunPlugin.Damage;
 
+		public override bool OnPickup()
+		{
+			Player p = new SmodPlayer(base.PlayerObject);
+
+			p.PersonalBroadcast(3, "<color=#fff8>You have picked up a tranquilizer gun.</color>", false);
+
+			return base.OnPickup();
+		}
+
 		// TODO: Redirect any damage done to ragdoll to player, make invisible player unshootable
 		protected override void OnValidShoot(GameObject target, ref float damage)
 		{
