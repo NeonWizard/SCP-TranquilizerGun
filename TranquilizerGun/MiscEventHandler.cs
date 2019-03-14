@@ -6,10 +6,11 @@ using System.Collections.Generic;
 using System;
 using System.Threading;
 using System.Linq;
+using UnityEngine;
 
 namespace TranquilizerGun
 {
-	class MiscEventHandler : IEventHandlerWaitingForPlayers, IEventHandlerSetConfig
+	class MiscEventHandler : IEventHandlerWaitingForPlayers, IEventHandlerSetConfig, IEventHandlerRoundStart
 	{
 		private readonly TranqGunPlugin plugin;
 
@@ -29,6 +30,46 @@ namespace TranquilizerGun
 			if (ev.Key == "sm_enable_ghostmode")
 			{
 				ev.Value = true;
+			}
+		}
+
+		public void OnRoundStart(RoundStartEvent ev)
+		{
+			foreach (RandomItemSpawner.PositionPosIdRelation item in UnityEngine.Object.FindObjectOfType<RandomItemSpawner>().posIds)
+			{
+				if (item.posID == "Fireman")
+				{
+					this.plugin.Handler.CreateOfType(item.position.position, item.position.rotation);
+					break;
+				}
+			}
+
+			foreach (string sl in TranqGunPlugin.SpawnLocations)
+			{
+				if (sl.ToLower() == "049chamber")
+				{
+
+				}
+				else if (sl.ToLower() == "173chamber")
+				{
+
+				}
+				else if (sl.ToLower() == "surfacenuke")
+				{
+
+				}
+				else if (sl.ToLower() == "nuke")
+				{
+
+				}
+				else if (sl.ToLower() == "bathrooms")
+				{
+
+				}
+				else
+				{
+					this.plugin.Info("Invalid spawn location: " + sl);
+				}
 			}
 		}
 	}

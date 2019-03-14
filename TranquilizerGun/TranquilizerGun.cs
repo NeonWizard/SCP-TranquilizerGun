@@ -30,10 +30,8 @@ namespace TranquilizerGun
 		protected override void OnValidShoot(GameObject target, ref float damage)
 		{
 			SmodPlayer p;
-			try
-			{
-				p = new SmodPlayer(target);
-			} catch { return; }
+			try { p = new SmodPlayer(target); }
+			catch { return; }
 			damage = 0;
 
 			// -- Exclude certain roles
@@ -49,7 +47,7 @@ namespace TranquilizerGun
 			Vector loc = p.GetPosition();
 
 			// -- Make them invisible
-			p.SetGhostMode(true, true, false); // TODO: test how spectators view a tranquilized person
+			p.SetGhostMode(true, true, false);
 
 			// -- Spawn ragdoll
 			int role = (int)p.TeamRole.Role;

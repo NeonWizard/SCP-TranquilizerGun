@@ -35,6 +35,8 @@ namespace TranquilizerGun
 
 		public static float TranqDuration { get; private set; }
 
+		public static List<string> SpawnLocations = new List<string>();
+
 		public override void OnDisable()
 		{
 			this.Info("TranquilizerGun has been disabled.");
@@ -59,8 +61,10 @@ namespace TranquilizerGun
 
 			this.AddConfig(new ConfigSetting("tranqgun_duration", 5f, SettingType.FLOAT, true, "Time (in seconds) the target is tranquilized for."));
 
+			this.AddConfig(new ConfigSetting("tranqgun_spawns", new string[] { "wheremyhotdogsat" }, true, SettingType.LIST, true, "Locations that the tranquilizer gun can spawn in."));
+
 			// -- Register events
-			this.AddEventHandlers(new MiscEventHandler(this));
+			this.AddEventHandlers(new MiscEventHandler(this), Smod2.Events.Priority.Low);
 
 			// -- Register weapon
 			this.Handler = new CustomWeaponHandler<TranquilizerGun>(TranqGunPlugin.TranqID)
@@ -81,10 +85,19 @@ namespace TranquilizerGun
 			TranqGunPlugin.FireRate = GetConfigFloat("tranqgun_firerate");
 			TranqGunPlugin.Magazine = GetConfigInt("tranqgun_magazine");
 
-			TranqGunPlugin.TranqDuration = GetConfigFloat("tranqgun_duration");
-
 			TranqGunPlugin.ReserveAmmo = GetConfigInt("tranqgun_reserveammo");
 			this.Handler.DefaultReserveAmmo = TranqGunPlugin.ReserveAmmo;
+
+			TranqGunPlugin.TranqDuration = GetConfigFloat("tranqgun_duration");
+
+			List<string> spawns = new List<string>(GetConfigList("tranqgun_spawns"));
+			if (spawns.Count == 1 && spawns[0] == "wheremyhotdogsat")
+			{
+				// -- Random defaults {173chamber|surfacenuke|nuke}
+				List<string> hotdogDefault = new List<string> { "173chamber", "surfacenuke", "nuke" };
+				spawns = new List<string> { hotdogDefault[new Random().Next(0, hotdogDefault.Count)] };
+			}
+			TranqGunPlugin.SpawnLocations = spawns;
 		}
 	}
 }
