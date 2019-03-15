@@ -22,7 +22,7 @@ tranqgun_firerate | Float | 3 | Time (in seconds) between each shot. Can be igno
 tranqgun_magazine | Int | 1 | Amount of shots per magazine.
 tranqgun_reserveammo | Int | 2 | Default reserve ammo for each player.
 tranqgun_duration | Float | 5 | Time (in seconds) the target is tranquilized for.
-tranqun_spawns | RList | 096chamber | RList of locations to spawn the gun. Valid locations are: 049chamber, 096chamber, 173armory, surfacenuke, nuke, bathrooms.
+tranqgun_spawns | RList | 096chamber | RList of locations to spawn the gun. Valid locations are: 049chamber, 096chamber, 173armory, surfacenuke, nuke, bathrooms.
 
 *Note that all configs should go in your server config file, not config_remoteadmin.txt
 
