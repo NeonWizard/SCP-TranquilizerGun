@@ -35,42 +35,85 @@ namespace TranquilizerGun
 
 		public void OnRoundStart(RoundStartEvent ev)
 		{
-			foreach (RandomItemSpawner.PositionPosIdRelation item in UnityEngine.Object.FindObjectOfType<RandomItemSpawner>().posIds)
+			RandomItemSpawner ris = UnityEngine.Object.FindObjectOfType<RandomItemSpawner>();
+
+			List<SpawnLocation> spawns = new List<SpawnLocation>();
+			foreach (string slRaw in TranqGunPlugin.SpawnLocations)
 			{
-				if (item.posID == "Fireman")
-				{
-					this.plugin.Handler.CreateOfType(item.position.position, item.position.rotation);
-					break;
-				}
-			}
+				string sl = slRaw.ToLower();
+				this.plugin.Info("Spawning tranquilizer gun at: " + sl);
+				List<SpawnLocation> choices = null;
 
-			foreach (string sl in TranqGunPlugin.SpawnLocations)
-			{
-				if (sl.ToLower() == "049chamber")
+				if (sl == "049chamber")
 				{
-
+					choices = ris
+						.posIds
+						.Where(x => x.posID == "049_Medkit")
+						.Select(x => new SpawnLocation(x.position.position, x.position.rotation))
+						.ToList();
 				}
-				else if (sl.ToLower() == "173chamber")
+				else if (sl == "096chamber")
 				{
-
+					choices = ris
+						.posIds
+						.Where(x => x.posID == "Fireman")
+						.Select(x => new SpawnLocation(x.position.position, x.position.rotation))
+						.ToList();
 				}
-				else if (sl.ToLower() == "surfacenuke")
+				else if (sl == "173armory")
 				{
-
+					choices = ris
+						.posIds
+						.Where(x => x.posID == "RandomPistol" && x.position.parent.parent.gameObject.name == "Root_173")
+						.Select(x => new SpawnLocation(x.position.position, x.position.rotation))
+						.ToList();
 				}
-				else if (sl.ToLower() == "nuke")
+				else if (sl == "surfacenuke")
 				{
-
+					Transform t = GameObject.Find("SCPSLNukeRoom/Table01 (2)").transform;
+					choices = new List<SpawnLocation>() { new SpawnLocation(t.position + Vector3.up*2.5f, Quaternion.identity) };
 				}
-				else if (sl.ToLower() == "bathrooms")
+				else if (sl == "nuke")
 				{
-
+					choices = ris
+						.posIds
+						.Where(x => x.posID == "Nuke")
+						.Select(x => new SpawnLocation(x.position.position, x.position.rotation))
+						.ToList();
 				}
-				else
+				else if (sl == "bathrooms")
+				{
+					choices = ris
+						.posIds
+						.Where(x => x.posID == "toilet_keycard")
+						.Select(x => new SpawnLocation(x.position.position, x.position.rotation))
+						.ToList();
+				}
+
+				if (choices == null || choices.Count == 0)
 				{
 					this.plugin.Info("Invalid spawn location: " + sl);
+					return;
 				}
+
+				spawns.Add(choices[UnityEngine.Random.Range(0, choices.Count)]);
 			}
+
+			foreach (SpawnLocation sl in spawns)
+			{
+				this.plugin.Handler.CreateOfType(sl.position, sl.rotation);
+			}
+		}
+	}
+
+	public struct SpawnLocation
+	{
+		public Vector3 position { get; private set; }
+		public Quaternion rotation { get; private set; }
+		public SpawnLocation(Vector3 p, Quaternion r)
+		{
+			this.position = p;
+			this.rotation = r;
 		}
 	}
 }

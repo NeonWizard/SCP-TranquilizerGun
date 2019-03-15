@@ -17,7 +17,7 @@ namespace TranquilizerGun
 		name = "TranquilizerGun",
 		description = "Adds a tranquilizer gun with temporarily ragdolls players.",
 		id = "xyz.wizardlywonders.TranquilizerGun",
-		version = "1.0.1",
+		version = "1.1.0",
 		SmodMajor = 3,
 		SmodMinor = 3,
 		SmodRevision = 0
@@ -35,7 +35,7 @@ namespace TranquilizerGun
 
 		public static float TranqDuration { get; private set; }
 
-		public static List<string> SpawnLocations = new List<string>();
+		public static List<string> SpawnLocations;
 
 		public override void OnDisable()
 		{
@@ -61,7 +61,7 @@ namespace TranquilizerGun
 
 			this.AddConfig(new ConfigSetting("tranqgun_duration", 5f, SettingType.FLOAT, true, "Time (in seconds) the target is tranquilized for."));
 
-			this.AddConfig(new ConfigSetting("tranqgun_spawns", new string[] { "wheremyhotdogsat" }, true, SettingType.LIST, true, "Locations that the tranquilizer gun can spawn in."));
+			this.AddConfig(new ConfigSetting("tranqgun_spawns", new string[] { "096chamber" }, true, SettingType.LIST, true, "Locations that the tranquilizer gun can spawn in."));
 
 			// -- Register events
 			this.AddEventHandlers(new MiscEventHandler(this), Smod2.Events.Priority.Low);
@@ -70,8 +70,7 @@ namespace TranquilizerGun
 			this.Handler = new CustomWeaponHandler<TranquilizerGun>(TranqGunPlugin.TranqID)
 			{
 				DefaultType = ItemType.USP,
-				AmmoName = "Tranquilizer Dart",
-				DefaultReserveAmmo = 2
+				AmmoName = "Tranquilizer Dart"
 			};
 			this.Handler.Register();
 			Items.AddRecipe(new Id914Recipe(KnobSetting.FINE, (int)ItemType.USP, TranqGunPlugin.TranqID, 1));
@@ -90,14 +89,7 @@ namespace TranquilizerGun
 
 			TranqGunPlugin.TranqDuration = GetConfigFloat("tranqgun_duration");
 
-			List<string> spawns = new List<string>(GetConfigList("tranqgun_spawns"));
-			if (spawns.Count == 1 && spawns[0] == "wheremyhotdogsat")
-			{
-				// -- Random defaults {173chamber|surfacenuke|nuke}
-				List<string> hotdogDefault = new List<string> { "173chamber", "surfacenuke", "nuke" };
-				spawns = new List<string> { hotdogDefault[new Random().Next(0, hotdogDefault.Count)] };
-			}
-			TranqGunPlugin.SpawnLocations = spawns;
+			TranqGunPlugin.SpawnLocations = new List<string>(GetConfigList("tranqgun_spawns"));
 		}
 	}
 }
