@@ -67,6 +67,7 @@ namespace TranquilizerGun
 			{
 				elapsed += Time.deltaTime;
 				p.Teleport(loc);
+				p.SetCurrentItemIndex(-1); // disallow equipping anything
 
 				yield return 0;
 			}
