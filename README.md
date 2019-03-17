@@ -17,6 +17,7 @@ Command | Description
 Config Option | Value Type | Default Value | Description
 ---: | :---: | :---: | ---
 tranqgun_enable | Bool | True | Whether TranquilizerGun should be enabled on server start.
+tranqgun_use_ghostmode | Bool | False | Instead of teleporting players to the void, make them invisible for the duration of tranquilization. REQUIRES SM_ENABLE_GHOSTMODE
 tranqgun_damage | Int | 0 | Damage dealt by the tranquilizer gun.
 tranqgun_firerate | Float | 3 | Time (in seconds) between each shot. Can be ignored with magazine size of 1.
 tranqgun_magazine | Int | 1 | Amount of shots per magazine.
