@@ -46,8 +46,15 @@ namespace TranquilizerGun
 			GameObject target = (GameObject)p.GetGameObject();
 			Vector loc = p.GetPosition();
 
-			// -- Make them invisible
-			p.SetGhostMode(true, true, false);
+			// -- Make them ghostmoded if enabled
+			if (TranqGunPlugin.Ghostmode)
+			{
+				p.SetGhostMode(true, true, false);
+			}
+			else
+			{
+				p.SetGodmode(true);
+			}
 
 			// -- Spawn ragdoll
 			int role = (int)p.TeamRole.Role;
@@ -61,16 +68,19 @@ namespace TranquilizerGun
 			NetworkServer.Spawn(ragdoll);
 			ragdoll.GetComponent<Ragdoll>().SetOwner(new Ragdoll.Info(p.PlayerId.ToString(), p.Name, new PlayerStats.HitInfo(), role, p.PlayerId));
 
-			// -- Freeze them until duration is up
+			// -- Freeze them until duration is up (teleport if !ghostmode)
 			float elapsed = 0;
 			while (elapsed < TranqGunPlugin.TranqDuration)
 			{
 				elapsed += Time.deltaTime;
-				p.Teleport(loc);
+
+				p.Teleport(TranqGunPlugin.Ghostmode ? loc : Vector.Zero);
 				p.SetCurrentItemIndex(-1); // disallow equipping anything
 
 				yield return 0;
 			}
+			p.Teleport(loc);
+			p.SetGodmode(false);
 
 			// -- Remove ghostmode and ragdoll
 			p.SetGhostMode(false);

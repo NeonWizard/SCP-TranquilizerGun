@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace TranquilizerGun
 {
-	class MiscEventHandler : IEventHandlerWaitingForPlayers, IEventHandlerSetConfig, IEventHandlerRoundStart
+	class MiscEventHandler : IEventHandlerWaitingForPlayers, IEventHandlerRoundStart
 	{
 		private readonly TranqGunPlugin plugin;
 
@@ -21,16 +21,6 @@ namespace TranquilizerGun
 			if (!this.plugin.GetConfigBool("tranqgun_enable")) this.plugin.pluginManager.DisablePlugin(plugin);
 
 			plugin.ReloadConfig();
-		}
-
-		public void OnSetConfig(SetConfigEvent ev)
-		{
-			// TODO: Instead of setting config, check if config exists. If not, teleport people to 0,0,0 for tranq duration
-			// -- Allow ghost mode to make tranquilized players invisible
-			if (ev.Key == "sm_enable_ghostmode")
-			{
-				ev.Value = true;
-			}
 		}
 
 		public void OnRoundStart(RoundStartEvent ev)

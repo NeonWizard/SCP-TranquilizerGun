@@ -17,7 +17,7 @@ namespace TranquilizerGun
 		name = "TranquilizerGun",
 		description = "Adds a tranquilizer gun with temporarily ragdolls players.",
 		id = "xyz.wizardlywonders.TranquilizerGun",
-		version = "1.1.1",
+		version = "1.2.0",
 		SmodMajor = 3,
 		SmodMinor = 3,
 		SmodRevision = 0
@@ -37,6 +37,8 @@ namespace TranquilizerGun
 
 		public static List<string> SpawnLocations;
 
+		public static bool Ghostmode { get; private set; }
+
 		public override void OnDisable()
 		{
 			this.Info("TranquilizerGun has been disabled.");
@@ -53,6 +55,7 @@ namespace TranquilizerGun
 
 			// -- Register config
 			this.AddConfig(new ConfigSetting("tranqgun_enable", true, SettingType.BOOL, true, "Whether TranquilizerGun should be enabled on server start."));
+			this.AddConfig(new ConfigSetting("tranqgun_use_ghostmode", false, SettingType.BOOL, true, "Instead of teleporting players to the void, make them invisible for the duration of tranquilization. REQUIRES SM_ENABLE_GHOSTMODE"));
 
 			this.AddConfig(new ConfigSetting("tranqgun_damage", 0, SettingType.NUMERIC, true, "Damage dealt by the tranquilizer gun."));
 			this.AddConfig(new ConfigSetting("tranqgun_firerate", 3f, SettingType.FLOAT, true, "Time (in seconds) between each shot."));
@@ -80,6 +83,8 @@ namespace TranquilizerGun
 
 		public void ReloadConfig()
 		{
+			TranqGunPlugin.Ghostmode = GetConfigBool("sm_enable_ghostmode") && GetConfigBool("tranqgun_use_ghostmode");
+
 			TranqGunPlugin.Damage = GetConfigInt("tranqgun_damage");
 			TranqGunPlugin.FireRate = GetConfigFloat("tranqgun_firerate");
 			TranqGunPlugin.Magazine = GetConfigInt("tranqgun_magazine");
