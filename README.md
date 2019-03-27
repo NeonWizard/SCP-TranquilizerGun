@@ -11,7 +11,7 @@ A custom weapon plugin for SCP:SL Smod2 servers that adds a tranquilizer gun. Wh
 ## Commands
 Command | Description
 :---: | ---
-`IMSPAWN 105 <playerID>` | Gives a tranquilizer gun to the player identified by `playerID`.
+`IMGIVE <playerID> 105` | Gives a tranquilizer gun to the player identified by `playerID`.
 
 ## Configuration
 Config Option | Value Type | Default Value | Description
