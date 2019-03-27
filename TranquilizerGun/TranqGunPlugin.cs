@@ -17,7 +17,7 @@ namespace TranquilizerGun
 		name = "TranquilizerGun",
 		description = "Adds a tranquilizer gun with temporarily ragdolls players.",
 		id = "xyz.wizardlywonders.TranquilizerGun",
-		version = "1.2.0",
+		version = "1.2.1",
 		SmodMajor = 3,
 		SmodMinor = 3,
 		SmodRevision = 0
