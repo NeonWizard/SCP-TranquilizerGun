@@ -7,6 +7,7 @@ using System;
 using System.Threading;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace TranquilizerGun
 {
@@ -91,19 +92,19 @@ namespace TranquilizerGun
 
 			foreach (SpawnLocation sl in spawns)
 			{
-				this.plugin.Handler.CreateOfType(sl.position, sl.rotation);
+				this.plugin.Handler.CreateOfType(sl.Position, sl.Rotation);
 			}
 		}
 	}
 
 	public struct SpawnLocation
 	{
-		public Vector3 position { get; private set; }
-		public Quaternion rotation { get; private set; }
+		public Vector3 Position { get; private set; }
+		public Quaternion Rotation { get; private set; }
 		public SpawnLocation(Vector3 p, Quaternion r)
 		{
-			this.position = p;
-			this.rotation = r;
+			this.Position = p;
+			this.Rotation = r;
 		}
 	}
 }

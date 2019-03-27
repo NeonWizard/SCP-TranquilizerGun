@@ -15,8 +15,6 @@ namespace TranquilizerGun
 		public override int MagazineCapacity => TranqGunPlugin.Magazine;
 		public override float FireRate => TranqGunPlugin.FireRate;
 
-		public int damage => TranqGunPlugin.Damage;
-
 		public override bool OnPickup()
 		{
 			Player p = new SmodPlayer(base.PlayerObject);
@@ -32,7 +30,8 @@ namespace TranquilizerGun
 			SmodPlayer p;
 			try { p = new SmodPlayer(target); }
 			catch { return; }
-			damage = 0;
+
+			damage = TranqGunPlugin.Damage;
 
 			// -- Exclude certain roles
 			if (p.TeamRole.Role == Role.SCP_173 || p.TeamRole.Role == Role.SCP_079) return;
