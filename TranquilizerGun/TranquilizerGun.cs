@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using scp4aiur;
 
+
 namespace TranquilizerGun
 {
 	public class TranquilizerGun : CustomWeapon
@@ -66,6 +67,19 @@ namespace TranquilizerGun
 			);
 			NetworkServer.Spawn(ragdoll);
 			ragdoll.GetComponent<Ragdoll>().SetOwner(new Ragdoll.Info(p.PlayerId.ToString(), p.Name, new PlayerStats.HitInfo(), role, p.PlayerId));
+
+			if (TranqGunPlugin.DropItems)
+			{
+				if (TranqGunPlugin.DropHeld)
+				{
+					p.GetCurrentItem().Drop();
+				}
+				else
+				{
+					foreach (Smod2.API.Item item in p.GetInventory())
+						item.Drop();
+				}
+			}
 
 			// -- Freeze them until duration is up (teleport if !ghostmode)
 			float elapsed = 0;

@@ -28,6 +28,12 @@ namespace TranquilizerGun
 
 		public CustomWeaponHandler<TranquilizerGun> Handler { get; private set; }
 
+		public static bool DropItems { get; private set; }
+		public static bool DropHeld { get; private set; }
+
+		public static Random Gen = new System.Random();
+
+		public static int RandomDropNum { get; private set; }
 		public static int Damage { get; private set; }
 		public static float FireRate { get; private set; }
 		public static int Magazine { get; private set; }
@@ -54,17 +60,19 @@ namespace TranquilizerGun
 			Timing.Init(this);
 
 			// -- Register config
-			this.AddConfig(new ConfigSetting("tranqgun_enable", true, SettingType.BOOL, true, "Whether TranquilizerGun should be enabled on server start."));
-			this.AddConfig(new ConfigSetting("tranqgun_use_ghostmode", false, SettingType.BOOL, true, "Instead of teleporting players to the void, make them invisible for the duration of tranquilization. REQUIRES SM_ENABLE_GHOSTMODE"));
+			this.AddConfig(new ConfigSetting("tranqgun_enable", true, true, "Whether TranquilizerGun should be enabled on server start."));
+			this.AddConfig(new ConfigSetting("tranqgun_use_ghostmode", false, true, "Instead of teleporting players to the void, make them invisible for the duration of tranquilization. REQUIRES SM_ENABLE_GHOSTMODE"));
+			this.AddConfig(new ConfigSetting("tranqgun_dropitems", false, true, "If tranquilized targets should drop items from their inventory."));
+			this.AddConfig(new ConfigSetting("tranqgun_dropitems_held", false, true, "If the items dropped from tranquilized targets should be randomly chosen instead of all their items."));
 
-			this.AddConfig(new ConfigSetting("tranqgun_damage", 0, SettingType.NUMERIC, true, "Damage dealt by the tranquilizer gun."));
-			this.AddConfig(new ConfigSetting("tranqgun_firerate", 3f, SettingType.FLOAT, true, "Time (in seconds) between each shot."));
-			this.AddConfig(new ConfigSetting("tranqgun_magazine", 1, SettingType.NUMERIC, true, "Amount of shots per magazine."));
-			this.AddConfig(new ConfigSetting("tranqgun_reserveammo", 2, SettingType.NUMERIC, true, "Default reserve ammo for each player."));
+			this.AddConfig(new ConfigSetting("tranqgun_damage", 0, true, "Damage dealt by the tranquilizer gun."));
+			this.AddConfig(new ConfigSetting("tranqgun_firerate", 3f, true, "Time (in seconds) between each shot."));
+			this.AddConfig(new ConfigSetting("tranqgun_magazine", 1, true, "Amount of shots per magazine."));
+			this.AddConfig(new ConfigSetting("tranqgun_reserveammo", 2, true, "Default reserve ammo for each player."));
 
-			this.AddConfig(new ConfigSetting("tranqgun_duration", 5f, SettingType.FLOAT, true, "Time (in seconds) the target is tranquilized for."));
+			this.AddConfig(new ConfigSetting("tranqgun_duration", 5f, true, "Time (in seconds) the target is tranquilized for."));
 
-			this.AddConfig(new ConfigSetting("tranqgun_spawns", new string[] { "096chamber" }, true, SettingType.LIST, true, "Locations that the tranquilizer gun can spawn in."));
+			this.AddConfig(new ConfigSetting("tranqgun_spawns", new string[] { "096chamber" }, true, true, "Locations that the tranquilizer gun can spawn in."));
 
 			// -- Register events
 			this.AddEventHandlers(new MiscEventHandler(this), Smod2.Events.Priority.Low);
@@ -88,6 +96,9 @@ namespace TranquilizerGun
 			TranqGunPlugin.Damage = GetConfigInt("tranqgun_damage");
 			TranqGunPlugin.FireRate = GetConfigFloat("tranqgun_firerate");
 			TranqGunPlugin.Magazine = GetConfigInt("tranqgun_magazine");
+
+			DropItems = GetConfigBool("tranqgun_dropitems");
+			DropHeld = GetConfigBool("tranqgun_dropitems_held");
 
 			TranqGunPlugin.ReserveAmmo = GetConfigInt("tranqgun_reserveammo");
 			this.Handler.DefaultReserveAmmo = TranqGunPlugin.ReserveAmmo;
