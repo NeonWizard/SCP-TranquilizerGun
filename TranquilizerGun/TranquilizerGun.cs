@@ -45,6 +45,15 @@ namespace TranquilizerGun
 			GameObject target = (GameObject)p.GetGameObject();
 			Vector loc = p.GetPosition();
 
+			// -- Drop item(s) if config is set
+			switch (TranqGunPlugin.DropItems)
+			{
+				case 1:
+					p.GetCurrentItem().Drop(); break;
+				case 2:
+					p.GetInventory().ForEach(x => x.Drop()); break;
+			}
+
 			// -- Make them ghostmoded if enabled
 			if (TranqGunPlugin.Ghostmode)
 			{

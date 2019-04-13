@@ -19,7 +19,7 @@ namespace TranquilizerGun
 
 		public void OnWaitingForPlayers(WaitingForPlayersEvent ev)
 		{
-			if (!this.plugin.GetConfigBool("tranqgun_enable")) this.plugin.pluginManager.DisablePlugin(plugin);
+			if (!this.plugin.GetConfigBool("tranqgun_enable")) PluginManager.Manager.DisablePlugin(plugin);
 
 			plugin.ReloadConfig();
 		}
@@ -62,7 +62,7 @@ namespace TranquilizerGun
 				else if (sl == "surfacenuke")
 				{
 					Transform t = GameObject.Find("SCPSLNukeRoom/Table01 (2)").transform;
-					choices = new List<SpawnLocation>() { new SpawnLocation(t.position + Vector3.up*2.5f, Quaternion.identity) };
+					choices = new List<SpawnLocation>() { new SpawnLocation(t.position + Vector3.up * 2.5f, Quaternion.identity) };
 				}
 				else if (sl == "nuke")
 				{
